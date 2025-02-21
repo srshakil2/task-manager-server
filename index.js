@@ -59,6 +59,19 @@ async function run() {
       // console.log(result);
       res.send(result);
     });
+    app.get("/alltask", async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const data = await taskCalection.find(query).toArray();
+      res.send(data);
+    });
+    app.delete("/deleteitem", async (req, res) => {
+      const id = req.query.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await taskCalection.deleteOne(query);
+      // console.log(result);
+      res.send(result);
+    });
     // work
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
