@@ -28,6 +28,10 @@ async function run() {
     const taskUserCalection = client
       .db("job-task-management-ass")
       .collection("users");
+    const taskCalection = client
+      .db("job-task-management-ass")
+      .collection("task");
+
     // all users name and email post
     app.post("/users", async (req, res) => {
       const data = req.body;
@@ -45,6 +49,14 @@ async function run() {
       const query = { email: email };
       const result = await taskUserCalection.findOne(query);
       //   console.log(result);
+      res.send(result);
+    });
+    // task added
+    app.post("/addtask", async (req, res) => {
+      const data = req.body;
+
+      const result = await taskCalection.insertOne(data);
+      // console.log(result);
       res.send(result);
     });
     // work
