@@ -28,7 +28,25 @@ async function run() {
     const taskUserCalection = client
       .db("job-task-management-ass")
       .collection("users");
+    // all users name and email post
+    app.post("/users", async (req, res) => {
+      const data = req.body;
+      const email = data.email;
+      const query = { email: email };
+      const chackUser = await taskUserCalection.findOne(query);
+      if (chackUser) return;
+      const result = await taskUserCalection.insertOne(data);
+      res.send(result);
+    });
 
+    // get login user
+    app.get("/useremail/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await taskUserCalection.findOne(query);
+      //   console.log(result);
+      res.send(result);
+    });
     // work
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -44,7 +62,7 @@ run().catch(console.dir);
 
 //
 app.get("/", (req, res) => {
-  res.send("job-task-server is running for you");
+  res.send("job-task-server is running for now");
 });
 app.listen(port, () => {
   console.log(`job-task is at: ${port}`);
