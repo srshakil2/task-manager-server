@@ -72,6 +72,28 @@ async function run() {
       // console.log(result);
       res.send(result);
     });
+    app.get("/taskdataupdate/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      // console.log(id);
+      const result = await taskCalection.findOne(query);
+      res.send(result);
+    });
+    app.patch("/taskdataupdate/update/:id", async (req, res) => {
+      const data = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: data?.taskTitel,
+          drescription: data?.description,
+          role: data?.selecet,
+        },
+      };
+      const result = await taskCalection.updateOne(query, updateDoc);
+      // console.log(result);
+      res.send(result);
+    });
     // work
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
